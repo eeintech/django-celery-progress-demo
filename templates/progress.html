@@ -1,0 +1,45 @@
+{% extends "download.html" %}
+{% load static %}
+{% block progress %}
+
+<div class="text-center" style="font-size: 14px">
+	<div id="progress-bar-message">
+	Enter URL and click the "Download" button
+	</div>
+</div>
+<div class='progress-wrapper' style="padding-top: 10px;">
+  <div id='progress-bar' class='progress-bar progress-bar-striped' role='progressbar' style="height:30px; width: 0%; border-radius: 5px">&nbsp;</div>
+</div>
+<div id="celery-result">
+</div>
+
+{% endblock progress %}
+
+{% block progress_bar_js %}
+{% if task_id %}
+
+<script type="text/javascript">
+	function processProgress(progressBarElement, progressBarMessageElement, progress) {
+			progressBarElement.style.width = progress.percent + "%";
+			var description = progress.description || "Start download";
+			progressBarMessageElement.innerHTML = description;
+		}
+
+	function processResult(resultElement, result) {
+		$( resultElement ).append(
+			$('<p>').text('Result: ' + result)
+		);
+	}
+
+	// Progress Bar (JQuery)
+	$(function () {
+		var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+		CeleryProgressBar.initProgressBar(progressUrl, {
+			onProgress: processProgress,
+			onResult: processResult,
+		})
+	});
+</script>
+
+{% endif %}
+{% endblock progress_bar_js %}

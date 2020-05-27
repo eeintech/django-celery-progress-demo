@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block demo %}
+<!-- Reset Form -->
+<a href="{% url 'download:demo' %}" role="button" class="btn btn-primary btn-lg btn-block" style="border-radius: 0px;"><b>RESET</b></a>
+
+<!-- Download Form -->
+<div class="container" style="padding-top: 20px;">
+	<div class="row">
+		<div class="col">
+			<form action="{% url 'download:demo' %}" method="post" style="display: inline;">
+				{% csrf_token %}
+				{{ form.errors }}
+				<div class="form-group">
+					<div class="input-group mb-3" align="center" style="margin:0 auto;">
+					  <input type="text" name="url" class="form-control" placeholder="Enter URL to download..." id="url">
+					  <div class="input-group-append">
+						<button class="btn btn-primary" type="submit"><strong>Download</strong></button>
+					  </div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Download Status -->
+<div class="container" style="padding-top: 20px;">
+	<div class="row">
+		<div class="col">
+			<div class="card" style="height: 140px;">
+				{% block progress %}{% endblock progress %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
