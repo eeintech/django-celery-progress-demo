@@ -1,0 +1,1 @@
+celery -A celery_progress_demo worker --loglevel=info --concurrency=1
