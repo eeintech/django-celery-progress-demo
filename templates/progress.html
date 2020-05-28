@@ -26,9 +26,14 @@
 		}
 
 	function processResult(resultElement, result) {
-		$( resultElement ).append(
-			$('<p>').text('Result: ' + result)
-		);
+		if (result.includes("successfully")) {
+			$( resultElement ).append(
+				$('<br>')
+			);
+			$( resultElement ).append(
+				$('<p class="text-center">').text(result)
+			);
+		}
 	}
 
 	// Progress Bar (JQuery)
