@@ -2,10 +2,10 @@
 Demo for [celery-progress](https://github.com/czue/celery-progress) Django application
 
 ### Start task
-![init](https://ibb.co/3dvXqNk)
+![init](media/init.png)
 
 ### Task in-progress
-![progress](https://ibb.co/QNXj6Wr)
+![progress](media/progress.png)
 
 ### Task completed
-![success](https://ibb.co/64VQgqF)
+![success](media/success.png)
