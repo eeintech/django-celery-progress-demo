@@ -21,12 +21,12 @@
 <script type="text/javascript">
 	function processProgress(progressBarElement, progressBarMessageElement, progress) {
 			progressBarElement.style.width = progress.percent + "%";
-			var description = progress.description || "Start download";
+			var description = progress.description || "Starting download";
 			progressBarMessageElement.innerHTML = description;
 		}
 
 	function processResult(resultElement, result) {
-		if (result.includes("successfully")) {
+		if (result.includes("successfull")) {
 			$( resultElement ).append(
 				$('<br>')
 			);

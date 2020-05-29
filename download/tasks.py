@@ -1,67 +1,33 @@
+from __future__ import absolute_import, unicode_literals
+
+# Celery
 from celery import shared_task
+
+# Celery-progress
 from celery_progress.backend import ProgressRecorder
 
 # Task imports
-import os, time, threading, queue, subprocess, urllib.request, re
-
-def output_reader(proc, outq):
-	for line in iter(proc.stdout.readline, b''):
-		outq.put(line.decode('utf-8'))
+import os, time, subprocess, re
 
 @shared_task(bind=True)
 def ProcessDownload(self, url):
-	print('Task started')
-	print(f'Downloading URL: {url}')
-	progress_recorder = ProgressRecorder(self)
+	print('Download: Task started')
 
+	# Build command
 	command = f'wget {url}'
 
-	### Code below is based on:
-	### https://eli.thegreenplace.net/2017/interacting-with-a-long-running-child-process-in-python/
+	# Start download process
+	download = subprocess.Popen(command.split(' '), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	update_progress(self, download)
 
-	proc = subprocess.Popen(command.split(' '), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-	outq = queue.Queue()
-	t = threading.Thread(target=output_reader, args=(proc, outq))
-	t.start()
-
+	download.terminate()
 	try:
-		time.sleep(0.2)
+		download.wait(timeout=0.2)
+		print(f'Subprocess terminated [Code {download.returncode}]')
+	except subprocess.TimeoutExpired:
+			print('Subprocess did not terminate on time')
 
-		# 5 consecutive empty lines = kill the process
-		timeout_count = 5
-		percentage = 0
-
-		while True:
-			try:
-				line = outq.get(block=False)
-				if '%' in line:
-					percentage = re.findall('[0-9]{0,3}%', line)[0].replace('%','')
-					print(percentage)
-					progress_recorder.set_progress(int(percentage), 100, description="Downloading")
-
-				timeout_count = 5
-			except queue.Empty:
-				print('could not get line from queue')
-				timeout_count -= 1
-				if timeout_count <= 0:
-					break
-
-			time.sleep(0.5)
-	finally:
-		# This is in 'finally' so that we can terminate the child if something
-		# goes wrong
-		proc.terminate()
-		try:
-			proc.wait(timeout=0.2)
-			print('== subprocess exited with rc =', proc.returncode)
-		except subprocess.TimeoutExpired:
-			print('subprocess did not terminate in time')
-
-	t.join()
-
-	print('Task completed')
-	if proc.returncode == 0:
+	if download.returncode == 0:
 		# Delete file
 		try:
 			folder = os.getcwd()
@@ -70,6 +36,25 @@ def ProcessDownload(self, url):
 			os.remove(filepath)
 		except:
 			print('Could not delete file')
-		return 'File was successfully downloaded!'
+		return 'Download was successfull!'
 	else:
 		raise Exception('Download timed out, try again')
+
+def update_progress(self, proc):
+	progress_recorder = ProgressRecorder(self)
+
+	while True:
+		line = proc.stdout.readline()
+
+		if line == b'':
+			break
+
+		linestr = line.decode("utf-8")
+		if '%' in linestr:
+			percentage = re.findall('[0-9]{0,3}%', linestr)[0].replace('%','')
+			print(percentage)
+			progress_recorder.set_progress(int(percentage), 100, description="Downloading")
+		else:
+			print(linestr)
+
+		time.sleep(0.5)
