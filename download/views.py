@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 
 from .forms import DownloadForm
-from .tasks import ProcessDownload
+from .tasks import ProcessDownload#, CheckDownloadProgress
 
 def demo_view(request):
 	if request.method == 'POST':
@@ -13,8 +13,8 @@ def demo_view(request):
 			url = form.cleaned_data['url']
 			print(f'Downloading: {url}')
 			# Create Task
-			task = ProcessDownload.delay(url)
-			task_id = task.task_id
+			download_task = ProcessDownload.delay(url)
+			task_id = download_task.task_id
 			print (f'Celery Task ID: {task_id}')
 
 			return render(request, 'progress.html', {'form': form, 'task_id': task_id})
