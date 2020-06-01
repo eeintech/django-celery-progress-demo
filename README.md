@@ -9,3 +9,6 @@ Demo for [celery-progress](https://github.com/czue/celery-progress) Django appli
 
 ### Task completed
 ![success](media/success.png)
+
+### Task failed
+![success](media/error.png)
