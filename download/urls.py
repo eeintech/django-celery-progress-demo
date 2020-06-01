@@ -1,12 +1,10 @@
 from django.urls import path, include
 
-from .views import demo_view, success_view
+from .views import demo_view
 
 app_name = 'download'
 
 urlpatterns = [
-	# Default view with empty form
+	# Demo view
 	path('', demo_view, name='demo'),
-	# Success view
-	path('<str:task_id>/', success_view, name='success'),
 ]

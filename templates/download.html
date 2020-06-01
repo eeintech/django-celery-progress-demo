@@ -11,15 +11,17 @@
 		<div class="col">
 			<form action="{% url 'download:demo' %}" method="post" style="display: inline;">
 				{% csrf_token %}
-				{{ form.errors }}
 				<div class="form-group">
 					<div class="input-group mb-3" align="center" style="margin:0 auto;">
-					  <input type="text" name="url" class="form-control" placeholder="Enter URL to download..." id="url">
+					  {{ form.url }}
 					  <div class="input-group-append">
-						<button class="btn btn-primary" type="submit"><strong>Download</strong></button>
+						<button class="btn btn-primary" type="submit" style="width:120px;">
+							<strong>Download</strong>
+						</button>
 					  </div>
 					</div>
 				</div>
+				{{ form.errors }}
 			</form>
 		</div>
 	</div>
