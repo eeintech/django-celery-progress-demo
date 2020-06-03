@@ -137,9 +137,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# CELERY
+
+# Celery Settings
 BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_SEND_SENT_EVENT = True
-CELERY_SEND_EVENTS = True
