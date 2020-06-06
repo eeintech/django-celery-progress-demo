@@ -3,7 +3,7 @@ asgiref==3.2.7
 billiard==3.6.3.0
 celery==4.4.2
 celery-progress==0.0.10
-Django==3.0.6
+Django==3.0.7
 kombu==4.6.8
 pytz==2020.1
 redis==3.5.2
