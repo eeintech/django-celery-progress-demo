@@ -7,34 +7,26 @@
 
 <!-- Download Form -->
 <div class="container" style="padding-top: 20px;">
-	<div class="row">
-		<div class="col">
-			<form action="{% url 'download:demo' %}" method="post" style="display: inline;">
-				{% csrf_token %}
-				<div class="form-group">
-					<div class="input-group mb-3" align="center" style="margin:0 auto;">
-					  {{ form.url }}
-					  <div class="input-group-append">
-						<button class="btn btn-primary" type="submit" style="width:120px;">
-							<strong>Download</strong>
-						</button>
-					  </div>
-					</div>
-				</div>
-				{{ form.errors }}
-			</form>
+	<form action="{% url 'download:demo' %}" method="post" style="display: inline;">
+		{% csrf_token %}
+		<div class="form-group">
+			<div class="input-group mb-3" align="center" style="margin:0 auto;">
+			  {{ form.url }}
+			  <div class="input-group-append">
+				<button class="btn btn-primary" type="submit" style="width:120px;">
+					<strong>Download</strong>
+				</button>
+			  </div>
+			</div>
 		</div>
-	</div>
+		{{ form.errors }}
+	</form>
 </div>
 
 <!-- Download Status -->
 <div class="container" style="padding-top: 20px;">
-	<div class="row">
-		<div class="col">
-			<div class="card" style="height: 120px;">
-				{% block progress %}{% endblock progress %}
-			</div>
-		</div>
+	<div class="card" style="height: 120px;">
+		{% block progress %}{% endblock progress %}
 	</div>
 </div>
 {% endblock %}
