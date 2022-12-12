@@ -23,6 +23,8 @@ $ source python3-env/bin/activate
 ```
 (python3-env) $ ./start_celery
 ```
+> :warning: Celery will try to connect to a local redis server as defined in [celery_progress_demo/celery.py](https://github.com/eeintech/django-celery-progress-demo/blob/b3bec3c0f11b1f382e87d22b5d7818051ba0a8ca/celery_progress_demo/celery.py#L11) file. If it is not able to connect, it will show an error. To install and run redis, check out their [installation guide](https://redis.io/docs/getting-started/installation/), or [read this](https://eeinte.ch/stream/progress-bar-django-using-celery/#step-1) if you are running this demo on a shared hosting server.
+
 6. Go to http://localhost:8000/ and have fun!
 
 ## Screenshots
